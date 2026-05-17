@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHL Assessment Recommender</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <header class="header">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">SHL</span>
+          <div>
+            <h1>Assessment Recommender</h1>
+            <p>Grounded in the SHL Individual Test Solutions catalog</p>
+          </div>
+        </div>
+        <nav class="header-links" aria-label="Service links">
+          <a href="/docs" target="_blank" rel="noopener noreferrer">API docs</a>
+          <a href="/health" target="_blank" rel="noopener noreferrer">Health</a>
+        </nav>
+      </header>
+
+      <main class="chat-shell" aria-label="Chat">
+        <div id="messages" class="messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+        <form id="composer" class="composer" autocomplete="off">
+          <label class="sr-only" for="user-input">Your message</label>
+          <textarea
+            id="user-input"
+            rows="2"
+            placeholder="Describe the role, skills, or assessment types you need…"
+            required
+          ></textarea>
+          <div class="composer-actions">
+            <button type="button" id="reset-btn" class="btn btn-ghost">New conversation</button>
+            <button type="submit" id="send-btn" class="btn btn-primary">Send</button>
+          </div>
+        </form>
+      </main>
+
+      <footer class="footer">
+        <p>Recommendations link only to catalog URLs from the local SHL snapshot. No general HR or legal advice.</p>
+      </footer>
+    </div>
+
+    <template id="message-template">
+      <article class="message">
+        <div class="message-meta"></div>
+        <div class="message-body"></div>
+        <ul class="recommendations" hidden></ul>
+      </article>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

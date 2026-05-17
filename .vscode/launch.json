@@ -15,7 +15,12 @@
         "8000"
       ],
       "jinja": true,
-      "justMyCode": true
+      "justMyCode": true,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Uvicorn running on .+",
+        "uriFormat": "http://127.0.0.1:8000/"
+      }
     }
   ]
 }

@@ -14,10 +14,13 @@ uvicorn app.main:app --reload --port 8000
 
 Then open:
 
-- App info: http://127.0.0.1:8000/
+- **Chat UI:** http://127.0.0.1:8000/
+- API info (JSON): http://127.0.0.1:8000/api
 - Health: http://127.0.0.1:8000/health
 - API docs: http://127.0.0.1:8000/docs
-- Chat: `POST http://127.0.0.1:8000/chat`
+- Chat API: `POST http://127.0.0.1:8000/chat`
+
+The frontend lives in `frontend/` and is served at the site root (`/`).
 
 ## Example
 
@@ -43,4 +46,4 @@ pytest
    - Build command: `pip install -r requirements.txt`
    - Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
    - Health check path: `/health`
-4. Submit the Render public URL for the assignment.
+4. Submit the Render public URL for the assignment (e.g. `https://<your-service>.onrender.com/`).
