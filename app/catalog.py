@@ -20,6 +20,24 @@ TYPE_LABEL_TO_CODE = {
     "Simulations": "S",
 }
 
+MOJIBAKE_REPLACEMENTS = {
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u0153": "-",
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u009d": "-",
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00cb\u0153": "'",
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u201e\u00a2": "'",
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00c5\u201c": '"',
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00c2\u009d": '"',
+    "\u00c3\u00a2\u00e2\u201a\u00ac\u00c2\u00a2": "-",
+    "\u00c3\u00a2\u00e2\u20ac\u017e\u00c2\u00a2": "TM",
+    "\u00c3\u0192\u00c2\u00a9": "e",
+    "\u00c3\u0192\u00c2\u00a7": "c",
+    "\u00c3\u0192\u00c2\u00b1": "n",
+    "\u00c3\u0192\u00c2\u00a1": "a",
+    "\u00c3\u0192\u00c2\u00b3": "o",
+    "\u00c3\u0192\u00c2\u00ad": "i",
+    "\u00c3\u0192\u00c2\u00ba": "u",
+}
+
 
 @lru_cache(maxsize=1)
 def load_catalog() -> list[CatalogItem]:
@@ -56,7 +74,10 @@ def normalize_catalog_item(item: dict) -> dict:
 
 
 def clean_text(value: str) -> str:
-    return re.sub(r"\s+", " ", value or "").strip()
+    text = re.sub(r"\s+", " ", value or "").strip()
+    for source, target in MOJIBAKE_REPLACEMENTS.items():
+        text = text.replace(source, target)
+    return text
 
 
 def parse_yes_no(value: str | bool | None) -> bool | None:

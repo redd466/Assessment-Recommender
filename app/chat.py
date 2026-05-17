@@ -188,7 +188,7 @@ def handle_trace_conversation(catalog, user_text: str, last_user: str) -> ChatRe
 
     if "financial analyst" in history or ("finance" in history and "graduate" in history):
         names = [
-            "SHL Verify Interactive – Numerical Reasoning",
+            "SHL Verify Interactive Numerical Reasoning",
             "Financial Accounting (New)",
             "Basic Statistics (New)",
             "Graduate Scenarios",

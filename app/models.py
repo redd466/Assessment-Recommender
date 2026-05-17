@@ -29,8 +29,8 @@ class CatalogItem(BaseModel):
     url: str
     test_type: str
     description: str = ""
-    job_levels: list[str] = []
-    languages: list[str] = []
+    job_levels: list[str] = Field(default_factory=list)
+    languages: list[str] = Field(default_factory=list)
     assessment_length_minutes: int | None = None
     remote_testing: bool | None = None
     adaptive_irt: bool | None = None
