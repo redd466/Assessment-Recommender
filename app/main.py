@@ -10,6 +10,14 @@ from app.models import ChatRequest, ChatResponse
 
 logger = logging.getLogger("uvicorn.error")
 
+FRONTEND_DIR = Path(__file__).resolve().parents[1] / "frontend"
+
+FRONTEND_ASSETS: dict[str, tuple[str, str]] = {
+    "index.html": ("text/html; charset=utf-8", "no-cache"),
+    "styles.css": ("text/css; charset=utf-8", "public, max-age=86400"),
+    "app.js": ("application/javascript; charset=utf-8", "public, max-age=86400"),
+}
+
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -25,14 +33,6 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title="Conversational SHL Assessment Recommender", lifespan=lifespan)
 
-FRONTEND_DIR = Path(__file__).resolve().parents[1] / "frontend"
-
-FRONTEND_ASSETS: dict[str, str] = {
-    "index.html": "text/html; charset=utf-8",
-    "styles.css": "text/css; charset=utf-8",
-    "app.js": "application/javascript; charset=utf-8",
-}
-
 
 def frontend_file(name: str) -> Path:
     path = FRONTEND_DIR / name
@@ -40,6 +40,15 @@ def frontend_file(name: str) -> Path:
         logger.error("Missing frontend asset: %s (looked in %s)", name, FRONTEND_DIR)
         raise HTTPException(status_code=404, detail=f"Frontend asset not found: {name}")
     return path
+
+
+def frontend_response(name: str) -> FileResponse:
+    media_type, cache_control = FRONTEND_ASSETS[name]
+    return FileResponse(
+        frontend_file(name),
+        media_type=media_type,
+        headers={"Cache-Control": cache_control},
+    )
 
 
 @app.get("/api")
@@ -74,14 +83,14 @@ def legacy_app_path() -> RedirectResponse:
 
 @app.get("/", include_in_schema=False)
 def serve_index() -> FileResponse:
-    return FileResponse(frontend_file("index.html"), media_type=FRONTEND_ASSETS["index.html"])
+    return frontend_response("index.html")
 
 
 @app.get("/styles.css", include_in_schema=False)
 def serve_styles() -> FileResponse:
-    return FileResponse(frontend_file("styles.css"), media_type=FRONTEND_ASSETS["styles.css"])
+    return frontend_response("styles.css")
 
 
 @app.get("/app.js", include_in_schema=False)
 def serve_app_js() -> FileResponse:
-    return FileResponse(frontend_file("app.js"), media_type=FRONTEND_ASSETS["app.js"])
+    return frontend_response("app.js")

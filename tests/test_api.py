@@ -26,6 +26,8 @@ def test_root_serves_frontend():
     assert response.status_code == 200
     assert "text/html" in response.headers.get("content-type", "")
     assert "SHL Assessment Recommender" in response.text
+    assert "welcome-card" in response.text
+    assert 'href="/styles.css"' in response.text
 
 
 def test_frontend_assets():
